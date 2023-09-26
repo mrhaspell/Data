@@ -1,0 +1,39 @@
+https://signmycode.com/resources/how-to-code-sign-windows-kernel-drivers-using-ev#:~:text=And%20to%20complete%20the%20driver,will%20then%20validate%20the%20signed%20.
+https://comodosslstore.com/code-signing/how-to-sign-comodo-ev-code-signing-certificate
+
+Step 9:
+signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a SignableFile.bin
+
+#3: Creating a .CAB Package
+signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a .\AcoustasUSB\AcoustasUSB.sys
+inf2cat.exe /driver:".\\AcoustasUSB\\" /os:10_x64
+signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a .\AcoustasUSB\AcoustasUSB.cat
+
+AcoustasUSB.ddf
+===========================================================================
+.OPTION EXPLICIT     ; Generate errors
+.Set CabinetFileCountThreshold=0
+.Set FolderFileCountThreshold=0
+.Set FolderSizeThreshold=0
+.Set MaxCabinetSize=0
+.Set MaxDiskFileCount=0
+.Set MaxDiskSize=0
+.Set CompressionType=MSZIP
+.Set Cabinet=on
+.Set Compress=on
+.Set DestinationDir=AcoustasUSB
+AcoustasUSB\acoustasusb.cat
+AcoustasUSB\AcoustasUSB.inf
+AcoustasUSB\AcoustasUSB.sys
+AcoustasUSB\ADI_USBi.spt
+===========================================================================
+
+makecab /d CabinetName1=AcoustasUSB.cab /D DiskDirectory=. /f AcoustasUSB.ddf
+
+Part 1: Sign with your EV Code Signing Certificate
+signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a .\AcoustasUSB.cab
+
+Part 2: Upload Signed Driver File To Microsoft Hardware Portal
+
+
+
